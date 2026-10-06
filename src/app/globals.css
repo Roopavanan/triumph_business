@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Brand red sampled from public/logo.webp (#F50007) */
+  --color-ink: #1a0b0d;
+  --color-ink-soft: #2a1316;
+  --color-sea: #c40008;
+  --color-sea-light: #ff8a8c;
+  --color-sand: #fffafa;
+  --color-sand-dark: #fdeeee;
+  --color-sun: #f50007;
+  --color-sun-light: #ff5c60;
+  --color-coral: #b30008;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-bricolage);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+  background: var(--color-sand);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-sun);
+  color: white;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #ff7a7d, var(--color-sun-light) 45%, var(--color-sun));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-marquee, .animate-float { animation: none; }
 }
